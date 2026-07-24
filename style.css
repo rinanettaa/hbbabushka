@@ -329,13 +329,16 @@ button, .btn {
 }
 
 .family-hover-text {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.45;
+    font-size: 18px;       /* Сделали 18px, как в воспоминаниях (было 14px) */
+    color: #444;        /* Сделали глубокий тёмный цвет (было #666) */
+    font-weight: 500;      /* Добавили полужирную плотность для читаемости */
+    line-height: 1.5;      /* Комфортное межстрочное расстояние */
     overflow-y: auto;
     max-height: 90px;
-    display: none; /* Прячется на мобильных, работает при наведении мыши на ПК */
+    display: none;
+    white-space: pre-line;
 }
+
 
 .dots-container {
     display: flex;
@@ -408,13 +411,15 @@ button, .btn {
 
 .sheet-content {
     margin-top: 5px;
-    font-size: 16px;
-    line-height: 1.55;
-    color: #444;
+    font-size: 18px;       /* Сделали 18px, как в воспоминаниях (было 16px) */
+    color: #444;        /* Сделали глубокий тёмный цвет (было #444) */
+    font-weight: 500;      /* Добавили полужирную плотность */
+    line-height: 1.55;     /* Уютный интервал между строками */
     overflow-y: auto;
     text-align: left;
-    white-space: pre-line; /* ОБЯЗАТЕЛЬНО ДОБАВЬ ЭТУ СТРОЧКУ для работы переносов */
+    white-space: pre-line;
 }
+
 
 
 /* --- МУЗЫКАЛЬНЫЙ ПЛЕЕР (FAB & MODAL) --- */
