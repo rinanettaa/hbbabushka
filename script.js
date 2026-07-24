@@ -130,7 +130,7 @@ function startFireworks() {
         cancelAnimationFrame(fireworkAnimationId);
         document.getElementById('greeting').scrollIntoView({ behavior: 'smooth' });
         initGreetingTimer();
-    }, 4000);
+    }, 8000);
 }
 
 // --- БЛОК 3: ПОЗДРАВЛЕНИЕ ---
@@ -138,7 +138,6 @@ const greetingBlock = document.getElementById('greeting');
 
 function initGreetingTimer() {
     greetingBlock.onclick = () => { goToPhotos(); };
-    greetingBlock.timer = setTimeout(goToPhotos, 5000);
 }
 
 function goToPhotos() {
