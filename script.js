@@ -260,7 +260,7 @@ const overlay = document.getElementById('sheetOverlay');
 const sheetContent = document.getElementById('sheetContent');
 
 function openBottomSheet(name, text) { 
-    sheetContent.innerHTML = `<h3 style="color:var(--color-primary); margin-bottom:12px; font-size:20px;">Поздравление от ${name}</h3><p style="font-size:18px !important; line-height:1.55; color:#1a1a1a !important; font-weight:500 !important;">${text}</p>`; 
+    sheetContent.innerHTML = `<h3 style="color:var(--color-primary); margin-bottom:12px; font-size:20px;">Автор поздравления — ${name}</h3><p style="font-size:18px !important; line-height:1.55; color:#1a1a1a !important; font-weight:500 !important;">${text}</p>`; 
     sheet.classList.add('open'); overlay.classList.add('open'); 
 }
 
