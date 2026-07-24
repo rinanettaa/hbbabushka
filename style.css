@@ -1,0 +1,576 @@
+/* --- ЦВЕТА И НАСТРОЙКИ (ПЕРЕМЕННЫЕ) --- */
+:root {
+    --bg-main: #F5EDE0;                 /* Основной светло-бежевый фон */
+    --bg-firework: #1A2A4A;             /* Тёмно-синий фон для салюта */
+    --color-primary: #73302e;           /* Тёмно-бордовый цвет текста */
+    --color-gold: #cfa86b;              /* Благородный золотистый цвет */
+    --font-title: 'Caveat', cursive;    /* Твой выбранный рукописный шрифт */
+    --font-sub: 'Lora', serif;          /* Уютный шрифт для подписей */
+    --font-main: 'Lora', serif;         /* Основной текст на сайте */
+}
+
+
+/* --- ОБЩИЕ СТИЛИ --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent; /* Убираем синюю вспышку при тапе на смартфонах */
+}
+
+html {
+    scroll-behavior: smooth; /* Обеспечивает плавный автоматический скролл */
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-main);
+    color: #333;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Акварельный абстрактный фон (4 больших размытых круга) */
+.watercolor-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px); /* По ТЗ размытие 100-120px */
+    opacity: 0.25;
+    mix-blend-mode: multiply;
+}
+
+.circle-blue { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #a2d2ff; }
+.circle-orange { bottom: -10%; right: -10%; width: 55vw; height: 55vw; background: #ffcad4; }
+.circle-red { top: -5%; right: -5%; width: 45vw; height: 45vw; background: #ffb5a7; }
+.circle-pink { bottom: -5%; left: -5%; width: 50vw; height: 50vw; background: #fcd5ce; }
+
+/* Настройки секций (всегда поверх кругов) */
+section {
+    position: relative;
+    z-index: 5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+/* Общие стили для кнопок (не менее 44px в высоту) */
+button, .btn {
+    min-height: 46px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    font-family: var(--font-main);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* --- БЛОК 1: ЗАСТАВКА --- */
+#welcome {
+    background-color: transparent;
+}
+
+.welcome-title {
+    font-family: var(--font-title);
+    color: var(--color-primary);
+    font-size: 2.2rem;
+    margin-bottom: 35px;
+    line-height: 1.3;
+    max-width: 600px;
+}
+
+.songs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 40px;
+}
+
+.song-btn {
+    background: white;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    color: #4a4a4a;
+    font-weight: 500;
+}
+
+.song-btn.selected {
+    border-color: var(--color-gold); /* Золотая подсветка по ТЗ */
+    box-shadow: 0 0 15px rgba(220, 187, 126, 0.5);
+    transform: scale(1.02);
+}
+
+.start-btn {
+    background: var(--color-primary);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 16px 40px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(115, 48, 46, 0.3);
+    display: none;
+    animation: pulse 2s infinite; /* Пульсация кнопки СТАРТ */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 5px 15px rgba(115, 48, 46, 0.3); }
+    50% { transform: scale(1.05); box-shadow: 0 5px 25px rgba(115, 48, 46, 0.5); }
+    100% { transform: scale(1); box-shadow: 0 5px 15px rgba(115, 48, 46, 0.3); }
+}
+
+/* --- БЛОК 2: САЛЮТ --- */
+#fireworks-section {
+    background-color: var(--bg-firework);
+    padding: 0;
+    position: relative;
+}
+
+#fireworksCanvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: block;
+}
+
+/* --- БЛОК 3: ПОЗДРАВЛЕНИЕ --- */
+#greeting {
+    cursor: pointer;
+}
+
+.greeting-main {
+    font-family: var(--font-title);
+    color: var(--color-primary);
+    font-size: 4.5rem; /* Увеличили размер, чтобы Caveat смотрелся сочно */
+    font-weight: 700;
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1.5s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+}
+
+
+.greeting-sub {
+    font-family: var(--font-sub);
+    color: var(--color-gold);
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1.5s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- БЛОК 4: ФОТОГРАФИИ --- */
+.section-title {
+    font-family: var(--font-title);
+    color: var(--color-primary);
+    font-size: 2.3rem;
+    margin-bottom: 40px;
+}
+
+.photos-feed {
+    width: 100%;
+    max-width: 550px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.photo-card {
+    width: 100%;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease; /* Мягкое проявление при скролле */
+}
+
+.photo-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- НОВАЯ СТРУКТУРА ДЛЯ СОХРАНЕНИЯ ПРОПОРЦИЙ ФОТО --- */
+.photo-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background: transparent; /* Убрали серый фон, чтобы рамки не торчали по бокам */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-wrapper img {
+    width: 100%;
+    height: auto;          /* Высота подстроится сама под любой размер картинки */
+    object-fit: contain;   /* Картинка выводится на 100% без обрезки краев */
+    border-radius: 8px;    /* Аккуратное мягкое скругление углов */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04); /* Элегантная тень, чтобы фото смотрелось объемно */
+}
+
+.photo-caption {
+    margin-top: 15px;
+    font-family: var(--font-main);
+    font-size: 18px;
+    color: #73302e;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.arrow-next {
+    margin-top: 40px;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    animation: bounce 2s infinite; /* Пульсация-прыжки стрелки */
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* --- БЛОК 5: ДРЕВО СЕМЬИ (3D КАРУСЕЛЬ) --- */
+#tree {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    height: 420px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-track {
+    position: relative;
+    width: 280px;
+    height: 360px;
+    perspective: 1000px; /* Эффект трехмерного пространства */
+}
+
+.family-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s, z-index 0.5s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Состояния закольцованной 3D карусели */
+.family-card.active { opacity: 1; pointer-events: auto; z-index: 10; transform: translateX(0) scale(1); }
+.family-card.prev { opacity: 0.4; pointer-events: auto; z-index: 5; transform: translateX(-65%) scale(0.85); }
+.family-card.next { opacity: 0.4; pointer-events: auto; z-index: 5; transform: translateX(65%) scale(0.85); }
+
+.family-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    background: #e5e5e5;
+}
+
+.family-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+}
+
+.family-relation {
+    font-size: 14px;
+    color: var(--color-gold);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.family-hover-text {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.45;
+    overflow-y: auto;
+    max-height: 90px;
+    display: none; /* Прячется на мобильных, работает при наведении мыши на ПК */
+}
+
+.dots-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.dot.active {
+    background: var(--color-primary);
+}
+
+/* --- МОБИЛЬНАЯ ШТОРКА (BOTTOM SHEET) --- */
+.bottom-sheet {
+    position: fixed;
+    bottom: 0; left: 0;
+    width: 100%;
+    background: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.12);
+    z-index: 200;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* Мягкий выезд снизу */
+    padding: 35px 24px;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-sheet.open {
+    transform: translateY(0);
+}
+
+.sheet-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(1px);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.sheet-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sheet-close {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #aaa;
+    min-height: 44px; min-width: 44px;
+}
+
+.sheet-content {
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #444;
+    overflow-y: auto;
+    text-align: left;
+    white-space: pre-line; /* ОБЯЗАТЕЛЬНО ДОБАВЬ ЭТУ СТРОЧКУ для работы переносов */
+}
+
+
+/* --- МУЗЫКАЛЬНЫЙ ПЛЕЕР (FAB & MODAL) --- */
+.audio-fab {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+    z-index: 100;
+    cursor: pointer;
+    font-size: 22px;
+    transition: transform 0.2s;
+    user-select: none;
+}
+
+.audio-fab:active {
+    transform: scale(0.9);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.45);
+    z-index: 150;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.music-modal {background: white;
+    border-radius: 16px;
+    padding: 25px;
+    width: 90%;
+    max-width: 360px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+}
+
+.modal-songs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-song-item {
+    padding: 12px 15px;
+    border-radius: 10px;
+    background: #f8f5f0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid transparent;
+    min-height: 44px;
+}
+
+.modal-song-item.active {
+    background: #fff6eb;
+    border-color: var(--color-gold);
+}
+
+.modal-song-title { 
+    font-weight: 500; 
+    font-size: 15px; 
+}
+
+.modal-song-artist { 
+    font-size: 12px; 
+    color: #888; 
+    margin-top: 2px; 
+}
+
+/* --- UX СТИЛИ ДЛЯ КОМПЬЮТЕРОВ (ПК) --- */
+@media (min-width: 768px) {
+    .welcome-title { font-size: 3.3rem; }
+    .greeting-main { font-size: 4.8rem; }
+    .greeting-sub { font-size: 2rem; }
+}
+
+.family-hover-text {
+    display: block; 
+    /* Показываем текст поздравления прямо в карточке на ПК */
+}
+
+.carousel-container { 
+    max-width: 600px; 
+}
+
+.carousel-track { 
+    width: 310px; 
+    height: 380px; 
+}
+
+.family-card.active:hover {
+    transform: scale(1.02);
+}
+
+/* --- БЛОК 6: ФИНАЛЬНОЕ ПОЗДРАВЛЕНИЕ --- */
+#final-block {
+    min-height: 60vh; /* Делаем блок чуть компактнее остальных, чтобы он аккуратно завершал страницу */
+    background: transparent;
+    padding-bottom: 100px; /* Отступ снизу, чтобы плеер не перекрывал дату */
+}
+
+.final-title {
+    font-family: var(--font-title); /* Твой выбранный рукописный Caveat */
+    color: var(--color-primary);
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.final-date {
+    font-family: var(--font-sub); /* Уютный шрифт Lora */
+    color: var(--color-gold);
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.final-heart {
+    font-size: 2.5rem;
+    animation: heartBeat 1.5s infinite ease-in-out; /* Пульсирующее сердечко в самом конце */
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+/* Корректировка размеров для больших экранов ПК */
+@media (min-width: 768px) {
+    .final-title { font-size: 5rem; }
+    .final-date { font-size: 2.2rem; }
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>С Днём Рождения, Бабушка!</title>
+    
+    <!-- Подключаем шрифты из Google Fonts -->
+    <!-- Подключаем шрифты Caveat и Lora из Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Caveat:wght@600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    
+    <!-- Подключаем внешний файл стилей -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Скрытый аудио-тег для музыки -->
+    <audio id="bgAudio"></audio>
+
+    <!-- Акварельный абстрактный фон -->
+    <div class="watercolor-bg" id="watercolorBg">
+        <div class="circle circle-blue"></div>
+        <div class="circle circle-orange"></div>
+        <div class="circle circle-red"></div>
+        <div class="circle circle-pink"></div>
+    </div>
+
+    <!-- БЛОК 1: ЗАСТАВКА (ВЫБОР ПЕСНИ) -->
+    <section id="welcome">
+        <h1 class="welcome-title">Бабушка, какое у тебя сегодня настроение?</h1>
+        <div class="songs-list" id="welcomeSongs"></div>
+        <button class="start-btn" id="startBtn">Начать праздник 🎉</button>
+    </section>
+
+    <!-- БЛОК 2: САЛЮТ -->
+    <section id="fireworks-section">
+        <canvas id="fireworksCanvas"></canvas>
+    </section>
+
+    <!-- БЛОК 3: ПОЗДРАВЛЕНИЕ -->
+    <section id="greeting">
+        <h2 class="greeting-main">С днём рождения, Бабушка!💗</h2>
+        <p class="greeting-sub">Сделано с любовью твоей внучкой Аней</p>
+    </section>
+
+    <!-- БЛОК 4: ФОТОГРАФИИ -->
+    <section id="photos">
+        <h2 class="section-title">Воспоминания</h2>
+        <div class="photos-feed" id="photosFeed"></div>
+        <button class="arrow-next" id="toTreeBtn">👇 Семейное поздравление</button>
+    </section>
+
+    <!-- БЛОК 5: ДРЕВО СЕМЬИ -->
+    <section id="tree">
+        <h2 class="section-title">Семейное поздравление!</h2>
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack"></div>
+        </div>
+        <div class="dots-container" id="dotsContainer"></div>
+    </section>
+
+        <!-- БЛОК 6: ФИНАЛЬНОЕ ПОЗДРАВЛЕНИЕ -->
+    <section id="final-block">
+        <h2 class="final-title">Поздравляю с 62-летием!</h2>
+        <p class="final-date">25.07.2026</p>
+        <p class="final-heart">❤️</p>
+    </section>
+
+
+    <!-- ШТОРКА (BOTTOM SHEET) ДЛЯ ТЕЛЕФОНОВ -->
+    <div class="sheet-overlay" id="sheetOverlay"></div>
+    <div class="bottom-sheet" id="bottomSheet">
+        <button class="sheet-close" id="sheetClose">&times;</button>
+        <div class="sheet-content" id="sheetContent"></div>
+    </div>
+
+    <!-- ПЛАВАЮЩИЙ МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
+    <div class="audio-fab" id="audioFab">🎵</div>
+    
+    <!-- МОДАЛЬНОЕ ОКНО СМЕНЫ ТРЕКА -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="music-modal">
+            <h3 class="modal-title">Выбери песню:</h3>
+            <div class="modal-songs-list" id="modalSongsList"></div>
+        </div>
+    </div>
+
+    <!-- Подключаем внешний файл логики -->
+    <script src="script.js"></script>
+</body>
+</html>
