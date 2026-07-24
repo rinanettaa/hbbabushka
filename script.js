@@ -218,21 +218,39 @@ function updateCarousel() {
     dots.forEach((dot, idx) => dot.classList.toggle('active', idx === currentTreeIndex));
 }
 
-let lastWheelTime = 0;
-document.getElementById('tree').addEventListener('wheel', (e) => {
-    const now = Date.now(); if (now - lastWheelTime < 500) return;
-    if (e.deltaY > 0) currentTreeIndex = (currentTreeIndex + 1) % FAMILY.length;
-    else currentTreeIndex = (currentTreeIndex - 1 + FAMILY.length) % FAMILY.length;
-    updateCarousel(); lastWheelTime = now; e.preventDefault();
-}, { passive: false });
+// --- ИСПРАВЛЕННОЕ УПРАВЛЕНИЕ СВАЙПАМИ ДЛЯ ТЕЛЕФОНОВ ---
+let touchStartX = 0;
+let touchEndX = 0;
 
-let touchStartX = 0; let touchEndX = 0;
-track.addEventListener('touchstart', e => { touchStartX = e.changedTouches.screenX; }, {passive: true});
-track.addEventListener('touchend', e => { touchEndX = e.changedTouches.screenX; handleSwipe(); }, {passive: true});
+// Добавляем обработчик touchmove, чтобы перехватить свайп и не дать странице дергаться
+track.addEventListener('touchstart', e => { 
+    touchStartX = e.changedTouches[0].screenX; 
+}, {passive: true});
+
+track.addEventListener('touchmove', e => {
+    // Отключаем скролл всей страницы вверх/вниз, пока палец двигает карусель
+    if (e.cancelable) e.preventDefault(); 
+}, {passive: false});
+
+track.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, {passive: true});
+
 function handleSwipe() {
-    if (touchStartX - touchEndX > 45) { currentTreeIndex = (currentTreeIndex + 1) % FAMILY.length; updateCarousel(); }
-    if (touchEndX - touchStartX > 45) { currentTreeIndex = (currentTreeIndex - 1 + FAMILY.length) % FAMILY.length; updateCarousel(); }
+    const total = FAMILY.length;
+    // Если свайпнули влево (палец пошел влево) -> листаем строго на одну карточку вперед
+    if (touchStartX - touchEndX > 40) {
+        currentTreeIndex = (currentTreeIndex + 1) % total;
+        updateCarousel();
+    }
+    // Если свайпнули вправо (палец пошел вправо) -> листаем строго на одну карточку назад
+    if (touchEndX - touchStartX > 40) {
+        currentTreeIndex = (currentTreeIndex - 1 + total) % total;
+        updateCarousel();
+    }
 }
+
 
 updateCarousel();
 
